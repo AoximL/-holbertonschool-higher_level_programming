@@ -1,13 +1,16 @@
 #!/usr/bin/python3
-
-"""  
-this file is using with open so you can read files from python
 """
+This module contains a function that reads a text file and prints it.
+It uses the UTF-8 encoding and the 'with' statement for safety.
+"""
+
+
 def read_file(filename=""):
+    """
+    Reads a text file (UTF8) and prints it to stdout.
 
-   """  
-   this file is using with open so you can read files from python
-   """
-   with open(filename, "r", encoding=utf8) as f:
-
-     print(f.read())
+    Args:
+        filename (str): The name of the file to be read.
+    """
+    with open(filename, "r", encoding="utf-8") as f:
+        print(f.read(), end="")
