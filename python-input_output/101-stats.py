@@ -9,12 +9,14 @@ Prints metrics every 10 lines and on keyboard interruption (CTRL + C)
 
 import sys
 
+
 def print_stats(total_size, status_codes):
     """Print the statistics"""
     print("File size: {}".format(total_size))
     for code in sorted(status_codes.keys()):
         if status_codes[code] != 0:
             print("{}: {}".format(code, status_codes[code]))
+
 
 def main():
     total_size = 0
@@ -26,15 +28,13 @@ def main():
         for line in sys.stdin:
             line_count += 1
             parts = line.split()
-            if len(parts) < 9:
-                continue
 
-            # Extract status code and file size
+            # Try to parse status code and file size from the last two fields
             try:
                 status = int(parts[-2])
                 size = int(parts[-1])
-            except ValueError:
-                continue
+            except (ValueError, IndexError):
+                continue  # Ignore lines that cannot be parsed
 
             # Update totals
             if status in status_codes:
