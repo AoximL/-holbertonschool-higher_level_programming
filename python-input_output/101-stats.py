@@ -19,6 +19,7 @@ def print_stats(total_size, status_codes):
 
 
 def main():
+    """Main function"""
     total_size = 0
     status_codes = {200: 0, 301: 0, 400: 0, 401: 0,
                     403: 0, 404: 0, 405: 0, 500: 0}
@@ -31,23 +32,22 @@ def main():
             if not parts:
                 continue
 
-            # Try to parse size (last part) and status (second-to-last)
+            # Try to parse size (last element)
             try:
                 size = int(parts[-1])
                 total_size += size
             except (ValueError, IndexError):
-                # Ignore if size is not a number
                 pass
 
+            # Try to parse status code (second-to-last element)
             try:
                 status = int(parts[-2])
                 if status in status_codes:
                     status_codes[status] += 1
             except (ValueError, IndexError):
-                # Ignore if status code is not a number
                 pass
 
-            # Print every 10 lines
+            # Print stats every 10 lines
             if line_count % 10 == 0:
                 print_stats(total_size, status_codes)
 
@@ -57,7 +57,10 @@ def main():
         raise
     else:
         # Print final stats if EOF reached
-        if line_count % 10 != 0:
+        if line_count == 0:
+            # Empty file: print only total size
+            print("File size: 0")
+        elif line_count % 10 != 0:
             print_stats(total_size, status_codes)
 
 
