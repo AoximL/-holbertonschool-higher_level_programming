@@ -6,7 +6,8 @@ Insert a line of text after each line containing a specific string
 
 
 def append_after(filename="", search_string="", new_string=""):
-    """Insert new_string after each line containing search_string in filename"""
+    """Insert new_string after each line containing search_string
+    in filename"""
     with open(filename, "r", encoding="utf-8") as f:
         lines = f.readlines()
 
