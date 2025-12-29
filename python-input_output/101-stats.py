@@ -28,18 +28,24 @@ def main():
         for line in sys.stdin:
             line_count += 1
             parts = line.split()
+            if not parts:
+                continue
 
-            # Try to parse status code and file size from the last two fields
+            # Try to parse size (last part) and status (second-to-last)
+            try:
+                size = int(parts[-1])
+                total_size += size
+            except (ValueError, IndexError):
+                # Ignore if size is not a number
+                pass
+
             try:
                 status = int(parts[-2])
-                size = int(parts[-1])
+                if status in status_codes:
+                    status_codes[status] += 1
             except (ValueError, IndexError):
-                continue  # Ignore lines that cannot be parsed
-
-            # Update totals
-            if status in status_codes:
-                status_codes[status] += 1
-            total_size += size
+                # Ignore if status code is not a number
+                pass
 
             # Print every 10 lines
             if line_count % 10 == 0:
@@ -51,7 +57,8 @@ def main():
         raise
     else:
         # Print final stats if EOF reached
-        print_stats(total_size, status_codes)
+        if line_count % 10 != 0:
+            print_stats(total_size, status_codes)
 
 
 if __name__ == "__main__":
